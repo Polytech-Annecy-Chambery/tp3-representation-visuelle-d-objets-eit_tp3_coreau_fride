@@ -40,6 +40,13 @@ class House:
         return self
             
     # Draws the house      
-    def draw(self):  
-        # A compléter en remplaçant pass par votre code
-        pass        
+    def draw(self): 
+    #Construction de la maison sur le modèle de Section et Wall
+      gl.glPushMatrix()
+      #La maison peut tourner autour de l'axe z et se translater selon x et y
+      gl.glRotatef(self.parameters['orientation'],0,0,1)
+      gl.glTranslatef(self.parameters['position'][0],self.parameters['position'][1],0)
+      gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) 
+      for i in self.objects:
+        i.draw()
+      gl.glPopMatrix()    
