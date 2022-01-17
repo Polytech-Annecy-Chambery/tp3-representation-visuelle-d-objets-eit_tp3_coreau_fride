@@ -63,6 +63,7 @@ class Configuration:
         gl.glClearColor(1, 1, 1, 1)
 
         # Clears the buffers and sets DEPTH_TEST to remove hidden surfaces
+        #tient compte de la profondeur afin de ne pas afficher les parties cachees
         gl.glClear(gl.GL_COLOR_BUFFER_BIT|gl.GL_DEPTH_BUFFER_BIT)                  
         gl.glEnable(gl.GL_DEPTH_TEST)   
         
@@ -74,7 +75,8 @@ class Configuration:
 
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glLoadIdentity()
-        gl.glTranslatef(0.0,0.0, self.parameters['screenPosition'])       
+        gl.glTranslatef(0.0,0.0, self.parameters['screenPosition'])      
+        gl.glRotatef(-90,1,0,0)
         
     # Getter
     def getParameter(self, parameterKey):
@@ -142,6 +144,13 @@ class Configuration:
         elif self.event.dict['unicode'] == 'z' or self.event.key == pygame.K_z:
             gl.glRotate(2.5, 0, 0, 1) 
         
+        #Gestion des touches Page Up et Page Down
+        #quand on monte et descend la page, l'echelle change
+        if self.event.key == pygame.K_PAGEUP:
+            gl.glScalef(1.1,1.1,1.1)
+        elif self.event.key == pygame.K_PAGEDOWN:
+            gl.glScalef(1/1.1,1/1.1,1/1.1)
+        
         # Draws or suppresses the reference frame
         elif self.event.dict['unicode'] == 'a' or self.event.key == pygame.K_a:
             self.parameters['axes'] = not self.parameters['axes']
@@ -149,11 +158,27 @@ class Configuration:
     
     # Processes the MOUSEBUTTONDOWN event
     def processMouseButtonDownEvent(self):
-        pass
+        if self.event.button == 5: #la molette descend
+         #on effectue un zoom negatif
+             gl.glScalef(1/1.1,1/1.1,1/1.1)
+         #on effectue un zoom positif
+        elif self.event.button == 4: #la molette descend
+             gl.glScalef(1.1,1.1,1.1)
     
     # Processes the MOUSEMOTION event
     def processMouseMotionEvent(self):
-        pass
+        #lorsque le bouton de gauche est enfoncé
+        if pygame.mouse.get_pressed()[0]==1 :
+            #rotation autour de l'axe z de la souris
+            gl.glRotate(self.event.rel[0], 0, 0, 1)
+            #rotation autour de l'axe x de la souris
+            gl.glRotate(self.event.rel[1], 1, 0, 0)
+        #lorsque le bouton de gauche est enfoncé    
+        if pygame.mouse.get_pressed()[2]==1:
+            #translation selon l'axe x
+            gl.glTranslatef(self.event.rel[0],0,0)
+            #translation selon l'axe z
+            gl.glTranslatef(0,0,-self.event.rel[1])
          
     # Displays on screen and processes events    
     def display(self): 
