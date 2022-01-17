@@ -65,34 +65,55 @@ class Opening:
                 [5,1,2,7],
                 [0,4,5,1],
                 [3,6,7,2]
-                ] 
+                ]
+
+        # Tracer les arêtes
+    def drawEdges(self):
+        gl.glPushMatrix()
+        gl.glTranslatef(self.parameters['position'][0],
+                       self.parameters['position'][1], 
+                       self.parameters['position'][2])
+        gl.glPolygonMode(gl.GL_FRONT_AND_BACK,gl.GL_LINE) # on trace les faces : GL_FILL
+        gl.glBegin(gl.GL_QUADS) # Tracé d’un quadrilatère
+        # on definit la couleur des arêtes qui sera plus sombre que celle des faces
+        gl.glColor3fv([self.parameters['color'][0]*0.5,
+                       self.parameters['color'][1]*0.5,
+                       self.parameters['color'][2]*0.5]) 
+        
+        #iteration sur chaque face
+        for i in self.faces:
+            #dans chaque face on colorie chaque sommet
+            for sommet in i:
+                gl.glVertex3fv(self.vertices[sommet])
+        gl.glEnd() 
+        gl.glPopMatrix() 
 
     # Draws the faces
     # affichage d'une ouverture par construction de murs (sections) et d'arêtes        
-    def draw(self):        
-      gl.glPushMatrix()
-      gl.glTranslatef(self.parameters['position'][0],
+    def draw(self): 
+        gl.glPushMatrix()
+        gl.glTranslatef(self.parameters['position'][0],
                       self.parameters['position'][1],
                       self.parameters['position'][2])
-      gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) 
-      gl.glBegin(gl.GL_QUADS)
-      gl.glColor3fv([self.parameters['color'][0]*0.5,
-                     self.parameters['color'][1]*0.5,
-                     self.parameters['color'][2]*0.5])
-      for face in self.faces:
-        for sommet in face:
-          gl.glVertex3fv(self.vertices[sommet])
-      gl.glEnd()
+        gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) 
+        gl.glBegin(gl.GL_QUADS)
+        gl.glColor3fv([self.parameters['color'][0]*0.5,
+                         self.parameters['color'][1]*0.5,
+                         self.parameters['color'][2]*0.5])
+        for face in self.faces:
+             for sommet in face:
+              gl.glVertex3fv(self.vertices[sommet])
+        gl.glEnd()
 
     #les aretes ne sont pas indispensables
-      gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE) 
-      gl.glBegin(gl.GL_QUADS) 
-      gl.glColor3fv([self.parameters['color'][0]*0.1,
-                     self.parameters['color'][1]*0.1,
-                     self.parameters['color'][2]*0.1])
-      for face in self.faces:
-        for vertex in face:
-          gl.glVertex3fv(self.vertices[vertex])
-      gl.glEnd()
+#        gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE) 
+#      gl.glBegin(gl.GL_QUADS) 
+#      gl.glColor3fv([self.parameters['color'][0]*0.1,
+#                     self.parameters['color'][1]*0.1,
+#                     self.parameters['color'][2]*0.1])
+#      for face in self.faces:
+#        for vertex in face:
+#          gl.glVertex3fv(self.vertices[vertex])
+#      gl.glEnd()
       
-      gl.glPopMatrix()   
+        gl.glPopMatrix()   
