@@ -14,9 +14,9 @@ from House import House
 from Opening import Opening
 import copy
 
-import pygame
-import OpenGL.GL as gl
-import OpenGL.GLU as glu
+#import pygame
+#import OpenGL.GL as gl
+#import OpenGL.GLU as glu
 
 def Q1a():
     return Configuration()
@@ -48,19 +48,20 @@ def Q3a():
 
 def Q4a():
     # Construction d'une maison de 4 murs, épaisseur (thickness) choisie par défaut
-    wall1 = Wall({'position': [1, 1, 0], 'width':7, 'height':5, 'orientation': 0})
-    wall2 = Wall({'position': [1, 1, 0], 'width':7, 'height':5, 'orientation': 90})
-    wall3 = Wall({'position': [1, 1, 0], 'width':7, 'height':5, 'orientation': 90})
-    wall4 = Wall({'position': [1, 1, 0], 'width':7, 'height':5, 'orientation': 0})  
-    house = House({'position': [-3, 1, 0], 'orientation':0})
-    house.add(wall1).add(wall3).add(wall4).add(wall2)
-    return Configuration().add(house)   
+    wall1 = Wall({'position': [-0.5,-1.5, 0], 'width':7, 'height':5, 'orientation': 0, 'thickness': 0.5})
+    wall2 = Wall({'position': [-1, 0, 0], 'width':7, 'height':5, 'orientation': 90,'thickness': 0.5})
+    wall3 = Wall({'position': [-1.5,-7,0], 'width':7, 'height':5, 'orientation': 90,'thickness': 0.5})
+    wall4 = Wall({'position': [0,5.5,0], 'width':7, 'height':5, 'orientation': 0,'thickness': 0.5})  
+    house=House()
+    house.add(wall1).add(wall2).add(wall3).add(wall4)
+    Configuration().add(house).display()
     
 def Q5a():  
     # Ecriture avec mélange de variable et de chaînage    
-    opening1 = Opening({'position': [2, 0, 0], 'width':0.9, 'height':2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]})
-    opening2 = Opening({'position': [4, 0, 1.2], 'width':1.25, 'height':1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]})    
-    return Configuration().add(opening1).add(opening2)
+    opening1 = Opening({'position': [2, 0, 0], 'width':0.9, 'height':2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7], 'edges':True})
+    opening2 = Opening({'position': [4, 0, 1.2], 'width':1.25, 'height':1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7],'edges':True})    
+    #return Configuration().add(opening1).add(opening2)
+    Configuration().add(opening1).add(opening2).display()
     
 def Q5b():  
     # Ecriture avec mélange de variable et de chaînage   
@@ -78,11 +79,12 @@ def Q5c1():
     #creation d'une ouverture de porte     
     section = Section({'width':7, 'height':2.6})
     opening1 = Opening({'position': [2, 0, 0], 'width':0.9, 'height':2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]})
-    sections = section.createOpening(opening1)
+    sections = section.createNewSections(opening1)
     configuration = Configuration()
     for x in sections:
         configuration.add(x)    
-    return configuration     
+    #return configuration 
+    configuration.display()    
     
 def Q5c2():  
 #creation d'une ouverture de fenêtre    
@@ -92,13 +94,16 @@ def Q5c2():
     configuration = Configuration()
     for section in sections:
         configuration.add(section)    
-    return configuration    
+    #return configuration
+    configuration.display()    
 
 def Q5d():      
-    wall = Wall({'width':7, 'height':2.6,})
+    wall1 = Wall({'width':7, 'height':2.6,})
     opening1 = Opening({'position': [2, 0, 0], 'width':0.9, 'height':2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]})
-    section = wall.findSection(opening1)
-    print(section)
+    #section = wall.findSection(opening1)
+    opening2 = Opening({'position': [4, 0, 1.2], 'width':1.25, 'height':1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) 
+    wall1.add(opening1).add(opening2)
+    Configuration().add(wall1).display()       
     
 def Q6():  
     pass  
@@ -109,15 +114,15 @@ def main():
     #configuration = Q1a()
     #configuration = Q1b_f()
     #configuration = Q2b()
-    # configuration = Q2c()
+    #configuration = Q2c()
     #configuration = Q3a()
-    #configuration = Q4a()
-    # configuration = Q5a()
-    # configuration = Q5b()
-    # configuration = Q5c1()
-    # configuration = Q5c2() 
+    #Zconfiguration = Q4a()
+    #configuration = Q5a()
+    #configuration = Q5b()
+    #configuration = Q5c1()
+    #configuration = Q5c2() 
     configuration = Q5d()
-    # configuration = Q6()
+    #configuration = Q6()
     configuration.display()     
          
 # Calls the main function
