@@ -48,12 +48,51 @@ class Opening:
     def generate(self):
         self.vertices = [ 
                 # Définir ici les sommets
+                [0,0,0],
+                [0,0,self.parameters['height']],
+                [self.parameters['width'],0,self.parameters['height']],
+                [self.parameters['width'],0,0],
+                [0,self.parameters['thickness'],0],
+                [0,self.parameters['thickness'],self.parameters['height']],
+                [self.parameters['width'],self.parameters['thickness'],0],
+                [self.parameters['width'],self.parameters['thickness'],self.parameters['height']]
                 ]
+                
         self.faces = [
                 # définir ici les faces
-                ]   
-        
-    # Draws the faces                
+                # seules 4 faces sont necessaires pour créer une ouverture
+                [0,3,6,4],
+                [5,1,2,7],
+                [0,4,5,1],
+                [3,6,7,2]
+                ] 
+
+    # Draws the faces
+    # affichage d'une ouverture par construction de murs (sections) et d'arêtes        
     def draw(self):        
-        # A compléter en remplaçant pass par votre code
-        pass
+      gl.glPushMatrix()
+      gl.glTranslatef(self.parameters['position'][0],
+                      self.parameters['position'][1],
+                      self.parameters['position'][2])
+      gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) 
+      gl.glBegin(gl.GL_QUADS)
+      gl.glColor3fv([self.parameters['color'][0]*0.5,
+                     self.parameters['color'][1]*0.5,
+                     self.parameters['color'][2]*0.5])
+      for face in self.faces:
+        for sommet in face:
+          gl.glVertex3fv(self.vertices[sommet])
+      gl.glEnd()
+
+    #les aretes ne sont pas indispensables
+      gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE) 
+      gl.glBegin(gl.GL_QUADS) 
+      gl.glColor3fv([self.parameters['color'][0]*0.1,
+                     self.parameters['color'][1]*0.1,
+                     self.parameters['color'][2]*0.1])
+      for face in self.faces:
+        for vertex in face:
+          gl.glVertex3fv(self.vertices[vertex])
+      gl.glEnd()
+      
+      gl.glPopMatrix()   
