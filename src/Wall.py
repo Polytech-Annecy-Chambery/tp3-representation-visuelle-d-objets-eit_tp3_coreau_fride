@@ -64,20 +64,23 @@ class Wall:
     # Adds an object    
     def add(self, x):    
         #on recherche la section dans laquelle l’insertion doit être faite
-        #si elle existe
-        liste = []
-        if self.findSection(x) != None :
-            #dans la liste des nouvelles sections,
-            #on supprime la section existante avec pop(i)
-            liste = self.createNewSections(x).pop([self.findSection(x)])
-            #liste.extend()
-        return liste   
+        #dans la liste des nouvelles sections,
+        #on supprime la section existante avec pop(i)
+        sect = self.findSection(x)
+        if sect!= None :
+            sect1 = sect[1].createNewSections(x)
+            self.objects.append(x)
+            self.objects.pop(self.findSection(x)[0])
+        #on ajoute le reste des elements de la liste
+        self.objects.extend(sect1)
+            
+        return self   
                     
     # Draws the faces
     def draw(self):
         gl.glPushMatrix()
         #angle de rotation autour de l'axe z avec l'attribut orientation
-        gl.Rotatef(self.parameters['orientation'],0,0,1)
+        gl.glRotatef(self.parameters['orientation'],0,0,1)
         gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL)
         #d'après draw() dans Configuration pour dessiner plusieurs objets
         for x in self.objects:
