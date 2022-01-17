@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+   # -*- coding: utf-8 -*-
 """
 Created on Thu Nov 16 19:47:50 2017
 
@@ -48,5 +48,7 @@ class House:
       gl.glTranslatef(self.parameters['position'][0],self.parameters['position'][1],0)
       gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) 
       for i in self.objects:
+        i.setParameter('edges',True)
         i.draw()
       gl.glPopMatrix()    
+
